@@ -18,10 +18,22 @@ public class WordAdapter extends ArrayAdapter<Word> {
         TextView defaultLang;
     }
 
+    /**
+     * Resource for parent is irrelevant here as we have defined out own getView, so we have passed 0.
+     * @param context
+     * @param objects
+     */
     public WordAdapter(@NonNull Context context, @NonNull ArrayList<Word> objects) {
-        super(context, R.layout.list_item, objects);
+        super(context, 0, objects);
     }
 
+    /**
+     * Provides a view for an AdapterView(ListView, GridView)
+     * @param position
+     * @param convertView
+     * @param parent
+     * @return
+     */
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -49,10 +61,5 @@ public class WordAdapter extends ArrayAdapter<Word> {
         viewHolder.defaultLang.setText(word.getDefaultLang());
         // Return the completed view to render on screen
         return convertView;
-
-
-
-
-//        return super.getView(position, convertView, parent);
     }
 }

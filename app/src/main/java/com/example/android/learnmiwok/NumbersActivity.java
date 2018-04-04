@@ -13,15 +13,17 @@ public class NumbersActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_numbers);
 
-        ArrayList<String> numbersList = new ArrayList<String>();
-        for (int i = 0; i < 1000; i++) {
-            numbersList.add(String.valueOf(i));
-        }
-
         ArrayList<Word> wordList = new ArrayList<Word>();
-        for (int i = 0; i < 1000; i++) {
-            wordList.add(new Word(String.valueOf(i), String.valueOf(i)));
-        }
+        wordList.add(new Word("one", "lutti"));
+        wordList.add(new Word("two", "otiiko"));
+        wordList.add(new Word("three", "tolookosu"));
+        wordList.add(new Word("four", "oyyisa"));
+        wordList.add(new Word("five", "massokka"));
+        wordList.add(new Word("six", "temmokka"));
+        wordList.add(new Word("seven", "kenekaku"));
+        wordList.add(new Word("eight", "kawinta"));
+        wordList.add(new Word("nine", "wo’e"));
+        wordList.add(new Word("ten", "na’aacha"));
 
         WordAdapter wordAdapter = new WordAdapter(this, wordList);
 

@@ -7,15 +7,15 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/miwokLang"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:text="miwok"/>
-
-    <TextView
         android:id="@+id/defaultLang"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:text="default"/>
+
+    <TextView
+        android:id="@+id/miwokLang"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="miwok"/>
 
 </LinearLayout>

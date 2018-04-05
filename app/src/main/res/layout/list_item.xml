@@ -3,19 +3,32 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
-    android:orientation="vertical">
+    android:orientation="horizontal"
+    android:padding="16dp">
 
-    <TextView
-        android:id="@+id/defaultLang"
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/ic_launcher" />
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:text="default"/>
+        android:orientation="vertical"
+        android:paddingLeft="16dp">
 
-    <TextView
-        android:id="@+id/miwokLang"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:text="miwok"/>
+        <TextView
+            android:id="@+id/defaultLang"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="default" />
+
+        <TextView
+            android:id="@+id/miwokLang"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="miwok" />
+
+    </LinearLayout>
 
 </LinearLayout>

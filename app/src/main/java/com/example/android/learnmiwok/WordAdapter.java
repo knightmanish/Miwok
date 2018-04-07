@@ -8,11 +8,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
 public class WordAdapter extends ArrayAdapter<Word> {
+
+    private int resId;
 
     private static class ViewHolder {
         TextView miwokLang;
@@ -26,8 +29,17 @@ public class WordAdapter extends ArrayAdapter<Word> {
      * @param context
      * @param objects
      */
-    public WordAdapter(@NonNull Context context, @NonNull ArrayList<Word> objects) {
+
+    /**
+     * Resource for parent is irrelevant here as we have defined out own getView, so we have passed 0.
+     *
+     * @param context
+     * @param objects
+     * @param resId
+     */
+    public WordAdapter(@NonNull Context context, @NonNull ArrayList<Word> objects, int resId) {
         super(context, 0, objects);
+        this.resId = resId;
     }
 
     /**
@@ -54,6 +66,9 @@ public class WordAdapter extends ArrayAdapter<Word> {
             viewHolder.miwokLang = (TextView) convertView.findViewById(R.id.miwokLang);
             viewHolder.defaultLang = (TextView) convertView.findViewById(R.id.defaultLang);
             viewHolder.icon = (ImageView) convertView.findViewById(R.id.icon);
+            LinearLayout textGroup = (LinearLayout) convertView.findViewById(R.id.textGroup);
+            textGroup.setBackgroundResource(this.resId);
+
             // Cache the viewHolder object inside the fresh view
             convertView.setTag(viewHolder);
         } else {
@@ -64,7 +79,6 @@ public class WordAdapter extends ArrayAdapter<Word> {
         // into the template view.
         viewHolder.miwokLang.setText(word.getMiwokLang());
         viewHolder.defaultLang.setText(word.getDefaultLang());
-//        viewHolder.icon.setBackgroundResource(word.getReourceId());
         if (word.getReourceId() == -1) {
             viewHolder.icon.setVisibility(View.GONE);
         } else {

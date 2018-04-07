@@ -6,12 +6,12 @@ public class Word {
     private String defaultLang;
     private int reourceId = -1;
 
-    public Word(String miwokLang, String defaultLang) {
+    public Word(String defaultLang, String miwokLang) {
         this.miwokLang = miwokLang;
         this.defaultLang = defaultLang;
     }
 
-    public Word(String miwokLang, String defaultLang, int reourceId) {
+    public Word(String defaultLang, String miwokLang, int reourceId) {
         this.miwokLang = miwokLang;
         this.defaultLang = defaultLang;
         this.reourceId = reourceId;

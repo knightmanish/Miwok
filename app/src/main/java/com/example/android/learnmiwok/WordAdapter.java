@@ -7,28 +7,44 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
 public class WordAdapter extends ArrayAdapter<Word> {
 
+    private int resId;
+
     private static class ViewHolder {
         TextView miwokLang;
         TextView defaultLang;
+        ImageView icon;
     }
 
     /**
      * Resource for parent is irrelevant here as we have defined out own getView, so we have passed 0.
+     *
      * @param context
      * @param objects
      */
-    public WordAdapter(@NonNull Context context, @NonNull ArrayList<Word> objects) {
+
+    /**
+     * Resource for parent is irrelevant here as we have defined out own getView, so we have passed 0.
+     *
+     * @param context
+     * @param objects
+     * @param resId
+     */
+    public WordAdapter(@NonNull Context context, @NonNull ArrayList<Word> objects, int resId) {
         super(context, 0, objects);
+        this.resId = resId;
     }
 
     /**
      * Provides a view for an AdapterView(ListView, GridView)
+     *
      * @param position
      * @param convertView
      * @param parent
@@ -49,6 +65,10 @@ public class WordAdapter extends ArrayAdapter<Word> {
             convertView = inflater.inflate(R.layout.list_item, parent, false);
             viewHolder.miwokLang = (TextView) convertView.findViewById(R.id.miwokLang);
             viewHolder.defaultLang = (TextView) convertView.findViewById(R.id.defaultLang);
+            viewHolder.icon = (ImageView) convertView.findViewById(R.id.icon);
+            LinearLayout textGroup = (LinearLayout) convertView.findViewById(R.id.textGroup);
+            textGroup.setBackgroundResource(this.resId);
+
             // Cache the viewHolder object inside the fresh view
             convertView.setTag(viewHolder);
         } else {
@@ -59,6 +79,11 @@ public class WordAdapter extends ArrayAdapter<Word> {
         // into the template view.
         viewHolder.miwokLang.setText(word.getMiwokLang());
         viewHolder.defaultLang.setText(word.getDefaultLang());
+        if (word.getReourceId() == -1) {
+            viewHolder.icon.setVisibility(View.GONE);
+        } else {
+            viewHolder.icon.setImageResource(word.getReourceId());
+        }
         // Return the completed view to render on screen
         return convertView;
     }

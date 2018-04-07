@@ -1,36 +1,33 @@
 package com.example.android.learnmiwok;
 
-import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.ListView;
-import android.widget.TextView;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class NumbersActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_numbers);
+        setContentView(R.layout.word_list);
 
-        ArrayList<String> numbersList = new ArrayList<String>();
+        ArrayList<Word> wordList = new ArrayList<Word>();
+        wordList.add(new Word("one", "lutti"));
+        wordList.add(new Word("two", "otiiko"));
+        wordList.add(new Word("three", "tolookosu"));
+        wordList.add(new Word("four", "oyyisa"));
+        wordList.add(new Word("five", "massokka"));
+        wordList.add(new Word("six", "temmokka"));
+        wordList.add(new Word("seven", "kenekaku"));
+        wordList.add(new Word("eight", "kawinta"));
+        wordList.add(new Word("nine", "wo’e"));
+        wordList.add(new Word("ten", "na’aacha"));
 
-        for (int i = 0; i < 1000; i++) {
-            numbersList.add(String.valueOf(i));
-        }
-
-        ArrayAdapter<String> itemsAdapter =
-                new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, numbersList);
+        WordAdapter wordAdapter = new WordAdapter(this, wordList);
 
         ListView listView = (ListView) findViewById(R.id.list);
-        listView.setAdapter(itemsAdapter);
+        listView.setAdapter(wordAdapter);
     }
 }

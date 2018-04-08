@@ -8,6 +8,8 @@ import java.util.ArrayList;
 
 public class ColorsActivity extends AppCompatActivity {
 
+    WordAdapter wordAdapter = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,9 +25,17 @@ public class ColorsActivity extends AppCompatActivity {
         wordList.add(new Word("dusty yellow", "ṭopiisә", R.drawable.color_dusty_yellow, R.raw.color_dusty_yellow));
         wordList.add(new Word("mustard yellow", "chiwiiṭә", R.drawable.color_mustard_yellow, R.raw.color_mustard_yellow));
 
-        WordAdapter wordAdapter = new WordAdapter(this, wordList, R.color.category_colors);
+        wordAdapter = new WordAdapter(this, wordList, R.color.category_colors);
 
         ListView listView = (ListView) findViewById(R.id.list);
         listView.setAdapter(wordAdapter);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (wordAdapter != null) {
+            wordAdapter.stopMedia();
+        }
     }
 }

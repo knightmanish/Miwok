@@ -46,6 +46,15 @@ public class WordAdapter extends ArrayAdapter<Word> {
                 '}';
     }
 
+    public void stopMedia() {
+        if (mediaPlayer != null) {
+            mediaPlayer.stop();
+            mediaPlayer.reset();
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
+    }
+
     /**
      * Resource for parent is irrelevant here as we have defined out own getView, so we have passed 0.
      *
@@ -97,12 +106,7 @@ public class WordAdapter extends ArrayAdapter<Word> {
                 public void onClick(View view) {
                     ViewHolder viewHolder = (ViewHolder) view.getTag();
 
-                    if (mediaPlayer != null) {
-                        mediaPlayer.stop();
-                        mediaPlayer.reset();
-                        mediaPlayer.release();
-                        mediaPlayer = null;
-                    }
+                    stopMedia();
                     mediaPlayer = MediaPlayer.create(getContext(), viewHolder.audioId);
                     mediaPlayer.start();
                     mediaPlayer.setOnCompletionListener(mOnCompletionListener);

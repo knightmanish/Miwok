@@ -8,6 +8,8 @@ import java.util.ArrayList;
 
 public class FamilyActivity extends AppCompatActivity {
 
+    WordAdapter wordAdapter = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,9 +27,17 @@ public class FamilyActivity extends AppCompatActivity {
         wordList.add(new Word("grandmother", "ama", R.drawable.family_grandmother, R.raw.family_grandmother));
         wordList.add(new Word("grandfather", "paapa", R.drawable.family_grandfather, R.raw.family_grandfather));
 
-        WordAdapter wordAdapter = new WordAdapter(this, wordList, R.color.category_family);
+        wordAdapter = new WordAdapter(this, wordList, R.color.category_family);
 
         ListView listView = (ListView) findViewById(R.id.list);
         listView.setAdapter(wordAdapter);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (wordAdapter != null) {
+            wordAdapter.stopMedia();
+        }
     }
 }

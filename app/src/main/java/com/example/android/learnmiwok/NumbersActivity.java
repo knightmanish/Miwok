@@ -8,6 +8,8 @@ import java.util.ArrayList;
 
 public class NumbersActivity extends AppCompatActivity {
 
+    WordAdapter wordAdapter = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -27,9 +29,17 @@ public class NumbersActivity extends AppCompatActivity {
         wordList.add(new Word("nine", "wo’e", R.drawable.number_nine, R.raw.number_nine));
         wordList.add(new Word("ten", "na’aacha", R.drawable.number_ten, R.raw.number_ten));
 
-        WordAdapter wordAdapter = new WordAdapter(this, wordList, R.color.category_numbers);
+        wordAdapter = new WordAdapter(this, wordList, R.color.category_numbers);
 
         ListView listView = (ListView) findViewById(R.id.list);
         listView.setAdapter(wordAdapter);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if(wordAdapter != null) {
+            wordAdapter.stopMedia();
+        }
     }
 }

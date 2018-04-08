@@ -8,6 +8,8 @@ import java.util.ArrayList;
 
 public class PhrasesActivity extends AppCompatActivity {
 
+    WordAdapter wordAdapter = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,9 +27,17 @@ public class PhrasesActivity extends AppCompatActivity {
         wordList.add(new Word("Let’s go.", "yoowutis", R.raw.phrase_lets_go));
         wordList.add(new Word("Come here.", "әnni'nem", R.raw.phrase_come_here));
 
-        WordAdapter wordAdapter = new WordAdapter(this, wordList, R.color.category_phrases);
+        wordAdapter = new WordAdapter(this, wordList, R.color.category_phrases);
 
         ListView listView = (ListView) findViewById(R.id.list);
         listView.setAdapter(wordAdapter);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (wordAdapter != null) {
+            wordAdapter.stopMedia();
+        }
     }
 }

@@ -1,6 +1,8 @@
 package com.example.android.learnmiwok;
 
 import android.content.Context;
+import android.content.res.AssetFileDescriptor;
+import android.media.MediaPlayer;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -11,16 +13,19 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class WordAdapter extends ArrayAdapter<Word> {
 
-    private int resId;
+    private int bgColorId;
+    MediaPlayer mediaPlayer;
 
     private static class ViewHolder {
         TextView miwokLang;
         TextView defaultLang;
         ImageView icon;
+        int audioId;
     }
 
     /**
@@ -39,7 +44,8 @@ public class WordAdapter extends ArrayAdapter<Word> {
      */
     public WordAdapter(@NonNull Context context, @NonNull ArrayList<Word> objects, int resId) {
         super(context, 0, objects);
-        this.resId = resId;
+        this.bgColorId = resId;
+        mediaPlayer = new MediaPlayer();
     }
 
     /**
@@ -67,10 +73,26 @@ public class WordAdapter extends ArrayAdapter<Word> {
             viewHolder.defaultLang = (TextView) convertView.findViewById(R.id.defaultLang);
             viewHolder.icon = (ImageView) convertView.findViewById(R.id.icon);
             LinearLayout textGroup = (LinearLayout) convertView.findViewById(R.id.textGroup);
-            textGroup.setBackgroundResource(this.resId);
+            textGroup.setBackgroundResource(this.bgColorId);
 
-            // Cache the viewHolder object inside the fresh view
-            convertView.setTag(viewHolder);
+            convertView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ViewHolder viewHolder = (ViewHolder) view.getTag();
+
+                    AssetFileDescriptor afd = getContext().getResources().openRawResourceFd(viewHolder.audioId);
+                    if (afd == null) return;
+                    try {
+                        mediaPlayer.reset();
+                        mediaPlayer.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
+                        mediaPlayer.prepare();
+                        mediaPlayer.start();
+                        afd.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
         } else {
             // View is being recycled, retrieve the viewHolder object from tag
             viewHolder = (ViewHolder) convertView.getTag();
@@ -79,6 +101,11 @@ public class WordAdapter extends ArrayAdapter<Word> {
         // into the template view.
         viewHolder.miwokLang.setText(word.getMiwokLang());
         viewHolder.defaultLang.setText(word.getDefaultLang());
+        viewHolder.audioId = word.getAudioId();
+
+        // Cache the viewHolder object
+        convertView.setTag(viewHolder);
+
         if (word.getReourceId() == -1) {
             viewHolder.icon.setVisibility(View.GONE);
         } else {

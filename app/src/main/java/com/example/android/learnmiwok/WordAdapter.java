@@ -21,11 +21,29 @@ public class WordAdapter extends ArrayAdapter<Word> {
     private int bgColorId;
     MediaPlayer mediaPlayer;
 
+    private MediaPlayer.OnCompletionListener mOnCompletionListener = new MediaPlayer.OnCompletionListener() {
+        @Override
+        public void onCompletion(MediaPlayer mediaPlayerReceived) {
+            if (mediaPlayer != null) {
+                mediaPlayer.release();
+                mediaPlayer = null;
+            }
+        }
+    };
+
     private static class ViewHolder {
         TextView miwokLang;
         TextView defaultLang;
         ImageView icon;
         int audioId;
+    }
+
+    @Override
+    public String toString() {
+        return "WordAdapter{" +
+                "bgColorId=" + bgColorId +
+                ", mediaPlayer=" + mediaPlayer +
+                '}';
     }
 
     /**
@@ -45,7 +63,6 @@ public class WordAdapter extends ArrayAdapter<Word> {
     public WordAdapter(@NonNull Context context, @NonNull ArrayList<Word> objects, int resId) {
         super(context, 0, objects);
         this.bgColorId = resId;
-        mediaPlayer = new MediaPlayer();
     }
 
     /**
@@ -80,17 +97,15 @@ public class WordAdapter extends ArrayAdapter<Word> {
                 public void onClick(View view) {
                     ViewHolder viewHolder = (ViewHolder) view.getTag();
 
-                    AssetFileDescriptor afd = getContext().getResources().openRawResourceFd(viewHolder.audioId);
-                    if (afd == null) return;
-                    try {
+                    if (mediaPlayer != null) {
+                        mediaPlayer.stop();
                         mediaPlayer.reset();
-                        mediaPlayer.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
-                        mediaPlayer.prepare();
-                        mediaPlayer.start();
-                        afd.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                        mediaPlayer.release();
+                        mediaPlayer = null;
                     }
+                    mediaPlayer = MediaPlayer.create(getContext(), viewHolder.audioId);
+                    mediaPlayer.start();
+                    mediaPlayer.setOnCompletionListener(mOnCompletionListener);
                 }
             });
         } else {

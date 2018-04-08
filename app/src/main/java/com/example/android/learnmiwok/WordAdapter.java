@@ -1,10 +1,11 @@
 package com.example.android.learnmiwok;
 
 import android.content.Context;
-import android.content.res.AssetFileDescriptor;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,13 +14,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class WordAdapter extends ArrayAdapter<Word> {
 
     private int bgColorId;
     MediaPlayer mediaPlayer;
+    AudioManager am = (AudioManager) getContext().getSystemService(Context.AUDIO_SERVICE);
 
     private MediaPlayer.OnCompletionListener mOnCompletionListener = new MediaPlayer.OnCompletionListener() {
         @Override
@@ -27,9 +28,50 @@ public class WordAdapter extends ArrayAdapter<Word> {
             if (mediaPlayer != null) {
                 mediaPlayer.release();
                 mediaPlayer = null;
+                releaseFcous();
             }
         }
     };
+
+    AudioManager.OnAudioFocusChangeListener afChangeListener = new AudioManager.OnAudioFocusChangeListener() {
+        public void onAudioFocusChange(int focusChange) {
+            if (focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT || focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK) {
+                Log.v("onAudioFocusChange", "in AUDIOFOCUS_LOSS_TRANSIENT");
+                mediaPlayer.pause();
+                mediaPlayer.seekTo(0);
+                // Pause playback
+            } else if (focusChange == AudioManager.AUDIOFOCUS_GAIN) {
+                Log.v("onAudioFocusChange", "in AUDIOFOCUS_GAIN");
+                // Resume playback
+                mediaPlayer.start();
+            } else if (focusChange == AudioManager.AUDIOFOCUS_LOSS) {
+                Log.v("onAudioFocusChange", "in AUDIOFOCUS_LOSS");
+                stopMedia();
+                releaseFcous();
+            }
+        }
+    };
+
+    public boolean requestFocus() {
+        // Request audio focus for playback
+        int result = am.requestAudioFocus(afChangeListener,
+                // Use the music stream.
+                AudioManager.STREAM_MUSIC,
+                // Request permanent focus.
+                AudioManager.AUDIOFOCUS_GAIN_TRANSIENT);
+
+        if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
+            Log.v("requestFocus", "true");
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public void releaseFcous() {
+        am.abandonAudioFocus(afChangeListener);
+        Log.v("releaseFcous", "true");
+    }
 
     private static class ViewHolder {
         TextView miwokLang;
@@ -106,10 +148,19 @@ public class WordAdapter extends ArrayAdapter<Word> {
                 public void onClick(View view) {
                     ViewHolder viewHolder = (ViewHolder) view.getTag();
 
+                    boolean recievedFocus = false;
+                    if (mediaPlayer == null) {
+                        recievedFocus = requestFocus();
+                    } else {
+                        recievedFocus = true;
+                    }
+
                     stopMedia();
-                    mediaPlayer = MediaPlayer.create(getContext(), viewHolder.audioId);
-                    mediaPlayer.start();
-                    mediaPlayer.setOnCompletionListener(mOnCompletionListener);
+                    if (recievedFocus) {
+                        mediaPlayer = MediaPlayer.create(getContext(), viewHolder.audioId);
+                        mediaPlayer.start();
+                        mediaPlayer.setOnCompletionListener(mOnCompletionListener);
+                    }
                 }
             });
         } else {

@@ -36,6 +36,7 @@ public class ColorsActivity extends AppCompatActivity {
         super.onStop();
         if (wordAdapter != null) {
             wordAdapter.stopMedia();
+            wordAdapter.releaseFcous();
         }
     }
 }

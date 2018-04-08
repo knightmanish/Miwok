@@ -38,6 +38,7 @@ public class PhrasesActivity extends AppCompatActivity {
         super.onStop();
         if (wordAdapter != null) {
             wordAdapter.stopMedia();
+            wordAdapter.releaseFcous();
         }
     }
 }

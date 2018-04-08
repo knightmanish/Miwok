@@ -38,8 +38,9 @@ public class NumbersActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        if(wordAdapter != null) {
+        if (wordAdapter != null) {
             wordAdapter.stopMedia();
+            wordAdapter.releaseFcous();
         }
     }
 }

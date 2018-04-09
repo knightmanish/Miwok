@@ -13,8 +13,9 @@
 
     <LinearLayout
         android:id="@+id/textGroup"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:minHeight="@dimen/list_item_height"
         android:orientation="vertical"
         android:paddingLeft="16dp">
@@ -39,5 +40,18 @@
             android:textAppearance="?android:textAppearanceMedium"
             android:textColor="@android:color/white"
             tools:text="default" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/playHolder"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/list_item_height">
+
+        <ImageView
+            android:layout_width="@dimen/play_icon_size"
+            android:layout_height="@dimen/play_icon_size"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="16dp"
+            android:src="@drawable/ic_play" />
     </LinearLayout>
 </LinearLayout>

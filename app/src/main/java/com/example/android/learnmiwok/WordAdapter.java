@@ -142,6 +142,9 @@ public class WordAdapter extends ArrayAdapter<Word> {
             viewHolder.icon = (ImageView) convertView.findViewById(R.id.icon);
             LinearLayout textGroup = (LinearLayout) convertView.findViewById(R.id.textGroup);
             textGroup.setBackgroundResource(this.bgColorId);
+            LinearLayout playHolder = (LinearLayout) convertView.findViewById(R.id.playHolder);
+            playHolder.setBackgroundResource(this.bgColorId);
+
 
             convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
